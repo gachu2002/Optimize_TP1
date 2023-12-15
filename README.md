@@ -14,3 +14,5 @@ A solution is represented by a matrix X[1..N][1..D] in which x[i][d] is the shif
 # Input
 * Line 1: contains 4 positive integers N, D, A, B (1 <= N <= 500, 1 <= D <= 200, 1 <= A <= B <= 500)
 * Line i + 1 (i = 1, 2, . . ., N): contains a list of positive integers which are the day off of the staff i (days are indexed from 1 to D), terminated by -1
+# Output
+* Line i (i = 1, 2, . . ., N): write the i row of the solution matrix X
