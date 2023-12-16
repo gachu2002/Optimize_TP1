@@ -38,24 +38,27 @@ def shift_scheduling(N, D, A, B, leave_days):
             model.Add(numOfEmployeePerShift >= A)
             model.Add(numOfEmployeePerShift <= B)
 
-    # Objective: Minimize the maximum number of night shifts assigned to a given employee
-    # max_night_shifts = model.NewIntVar(0, D, 'max_night_shifts')
-    # for i in employees:
-    #     model.AddMaxEquality(max_night_shifts, [sum(x[(i, d, 4)] for d in days)])
-    #     model.Minimize(max_night_shifts)
-        
-    # Objective: Minimize the total number of night shifts
-    total_night_shifts = model.NewIntVar(0, N * D, 'total_night_shifts')
-    night_shifts_per_employee = [sum(x[(i, d, 4)] for d in days) for i in employees]
-    model.Add(total_night_shifts == sum(night_shifts_per_employee))
-    model.Minimize(total_night_shifts)
     
+    # Objective: Minimize the maximum number of night shifts assigned to a given employee
+    max_night_shifts = model.NewIntVar(0, D, 'max_night_shifts')
+    for i in employees:
+        model.AddMaxEquality(max_night_shifts, [sum(x[(i, d, 4)] for d in days)])
+        model.Minimize(max_night_shifts)
+        
+   
     # Solve
     solver = cp_model.CpSolver()
     status = solver.Solve(model)
     
+    # Objective: Minimize the total number of night shifts
+    # total_night_shifts = model.NewIntVar(0, N * D, 'total_night_shifts')
+    # night_shifts_per_employee = [sum(x[(i, d, 4)] for d in days) for i in employees]
+    # model.Add(total_night_shifts == sum(night_shifts_per_employee))
+    # model.Minimize(total_night_shifts)
+    # status = solver.Solve(model)
+    
     # Output
-    output_file_path = 'tests\\result\output1.txt'
+    output_file_path = 'tests\\CPresult\output1.txt'
     if status == cp_model.OPTIMAL:
         solution = [[[solver.Value(x[i, d, s]) * s for s in shifts] for d in days] for i in employees]
         with open(output_file_path, 'w') as output_file:
