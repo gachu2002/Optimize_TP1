@@ -55,7 +55,7 @@ def shift_scheduling(N, D, A, B, leave_days):
     status = solver.Solve(model)
     
     # Output
-    output_file_path = 'result\output1.txt'
+    output_file_path = 'tests\\result\output1.txt'
     if status == cp_model.OPTIMAL:
         solution = [[[solver.Value(x[i, d, s]) * s for s in shifts] for d in days] for i in employees]
         with open(output_file_path, 'w') as output_file:
@@ -66,7 +66,7 @@ def shift_scheduling(N, D, A, B, leave_days):
             output_file.write("No solution found.\n")
 
 # Read input from file
-with open('tests\input1.txt', 'r') as input_file:
+with open('res\input1.txt', 'r') as input_file:
     N, D, A, B = map(int, input_file.readline().split())
     leave_days = []
     for _ in range(N):
