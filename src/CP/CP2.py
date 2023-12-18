@@ -45,18 +45,18 @@ def shift_scheduling(N, D, A, B, leave_days):
         model.AddMaxEquality(max_night_shifts, [x[(i, d)] for d in days])
     model.Minimize(max_night_shifts)
 
-    # Objective: Minimize the total number of night shifts
-    total_night_shifts = model.NewIntVar(0, N * D, 'total_night_shifts')
-    night_shifts_per_employee = [x[(i, d)] for i in employees for d in days]
-    model.Add(total_night_shifts == sum(night_shifts_per_employee))
-    model.Minimize(total_night_shifts)
+    # # Objective: Minimize the total number of night shifts
+    # total_night_shifts = model.NewIntVar(0, N * D, 'total_night_shifts')
+    # night_shifts_per_employee = [x[(i, d)] for i in employees for d in days]
+    # model.Add(total_night_shifts == sum(night_shifts_per_employee))
+    # model.Minimize(total_night_shifts)
     
     # Solve
     solver = cp_model.CpSolver()
     status = solver.Solve(model)
     
     # Output
-    output_file_path = 'tests\\CPresult\output1.txt'
+    output_file_path = 'tests\CPresult\out_N_8_D_6.txt'
     if status == cp_model.OPTIMAL:
         solution = [[solver.Value(x[i, d]) for d in days] for i in employees]
         with open(output_file_path, 'w') as output_file:
@@ -68,7 +68,7 @@ def shift_scheduling(N, D, A, B, leave_days):
 
 
 # Read input from file
-with open('res\input1.txt', 'r') as input_file:
+with open('res\in_N_8_D_6.txt', 'r') as input_file:
     N, D, A, B = map(int, input_file.readline().split())
     leave_days = []
     for _ in range(N):
